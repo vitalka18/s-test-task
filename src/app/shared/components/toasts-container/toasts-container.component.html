@@ -1,0 +1,12 @@
+@for (toast of toasts; track toast) {
+  <ngb-toast
+    header="{{ toast.header || undefined }}"
+    class="{{ toastVariants[toast.variant] }} mb-3"
+    [autohide]="true"
+    [delay]="toast.delay || 5000"
+    (hidden)="onRemoveToast(toast)">
+    @if (toast.body) {
+      {{ toast.body }}
+    }
+  </ngb-toast>
+}

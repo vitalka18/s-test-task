@@ -1,0 +1,8 @@
+<button
+  type="button"
+  class="btn-add"
+  [disabled]="disabled()"
+  (click)="clicked.emit()"
+  ngbTooltip="Add new User">
+  <span class="btn-add-inner"> + </span>
+</button>

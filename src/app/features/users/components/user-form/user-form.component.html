@@ -1,0 +1,67 @@
+@if (form) {
+  <form novalidate="novalidate" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <section class="mb-5">
+      <div class="d-flex align-items-center gap-2">
+        @if (isSubmitting()) {
+          <button
+            class="btn btn-danger"
+            type="button"
+            (click)="onCancelSubmit()">
+            Cancel
+          </button>
+          <div class="text-danger">{{ timer | date: 'mm:ss' }}</div>
+        } @else {
+          <button class="btn btn-primary" type="submit">
+            Submit all forms
+          </button>
+
+          @if (usersForm.length && isSubmitted()) {
+            <div class="text-danger">
+              Invalid forms:
+              {{ usersForm | appInvalidControlsCount }}
+            </div>
+          }
+        }
+      </div>
+    </section>
+
+    <section class="form-grid">
+      <ng-container formArrayName="users">
+        @for (
+          control of usersForm.controls;
+          track control;
+          let index = $index
+        ) {
+          <div class="form-grid-item">
+            <div
+              class="card user-control"
+              [class.border-danger]="control.invalid && control.touched">
+              @if (usersForm.length !== 1) {
+                <button
+                  type="button"
+                  class="btn-close"
+                  [disabled]="isSubmitting()"
+                  [disableTooltip]="isSubmitting()"
+                  ngbTooltip="Close Form"
+                  aria-label="Cancel Form"
+                  (click)="onRemoveControl(index)"></button>
+              }
+              <div class="card-body">
+                <app-user-control
+                  [isSubmitted]="isSubmitted()"
+                  [countries]="countries()"
+                  [formControl]="control" />
+              </div>
+            </div>
+          </div>
+        }
+      </ng-container>
+
+      <div class="form-grid-item">
+        <app-add-user-button
+          [disabled]="isSubmitting()"
+          (clicked)="onAddControl()" />
+      </div>
+    </section>
+  </form>
+}
