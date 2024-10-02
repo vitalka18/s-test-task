@@ -1,4 +1,4 @@
-# CoreBase Angular
+# Just some test project with nested forms
 > This document describes how to set up development environment to build and test web application based on angular.
 
 Before starting the development ensure that you are familiar with next documents  [Angular Style Guide](https://angular.io/guide/styleguide) as they describe code conduct on this project.
