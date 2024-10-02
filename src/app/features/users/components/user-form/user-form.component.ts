@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   inject,
@@ -44,6 +45,7 @@ export interface UserForm {
   ],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserFormComponent implements OnInit, OnDestroy {
   countries = input.required<string[]>();
@@ -51,7 +53,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   submitted = output<User[]>();
   isSubmitting = signal(false);
   isSubmitted = signal(false);
-  countdown = 0;
+  countdown = signal(0);
   form!: FormGroup<UserForm>;
   cancel$ = new Subject<void>();
 
@@ -65,7 +67,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   get timer(): number {
-    return this.countdown * 1000;
+    return this.countdown() * 1000;
   }
 
   ngOnInit() {
@@ -85,7 +87,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   onCancelSubmit() {
     this.cancel$.next();
     this.isSubmitting.set(false);
-    this.countdown = 0;
+    this.countdown.set(0);
     this.form.enable();
   }
 
@@ -130,7 +132,7 @@ export class UserFormComponent implements OnInit, OnDestroy {
   }
 
   private submitForm() {
-    this.countdown = this.delay() + 1;
+    this.countdown.set(this.delay() + 1);
     this.isSubmitting.set(true);
     this.form.disable();
 
@@ -141,9 +143,9 @@ export class UserFormComponent implements OnInit, OnDestroy {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => {
-        this.countdown--;
+        this.countdown.set(this.countdown() - 1);
 
-        if (this.countdown <= 0) {
+        if (this.countdown() <= 0) {
           this.submitted.emit(this.form.value.users!);
 
           this.clearForm();

@@ -5,7 +5,7 @@ import { provideRouter, RouterOutlet } from '@angular/router';
 import {
   HTTP_INTERCEPTORS,
   provideHttpClient,
-  withInterceptorsFromDi,
+  withInterceptorsFromDi, HttpClientModule,
 } from '@angular/common/http';
 
 import { MockBackendInterceptor } from './shared/mock-backend/mock-backend.interceptor';
@@ -17,10 +17,11 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { AppDateParserFormatter } from '@services/ngb-date-formatter.service';
 import { AppNgbDateAdapter } from '@services/ngb-date-adapter.service';
+import { TranslocoRootModule } from './transloco-root.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, RouterOutlet, ToastsContainerComponent],
+  imports: [BrowserModule, RouterOutlet, ToastsContainerComponent, HttpClientModule, TranslocoRootModule],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
     provideRouter(appRoutes),

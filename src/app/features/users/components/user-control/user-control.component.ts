@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   DestroyRef,
   forwardRef,
@@ -67,6 +68,7 @@ type UserControl = {
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserControlComponent
   implements ControlValueAccessor, Validator, OnInit, OnChanges
